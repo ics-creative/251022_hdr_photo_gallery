@@ -1,11 +1,5 @@
 import { flushSync } from "react-dom";
 
-declare global {
-  interface Document {
-    startViewTransition: (callback: () => void) => ViewTransition;
-  }
-}
-
 class InstantViewTransition implements ViewTransition {
   finished = Promise.resolve();
   ready = Promise.resolve();
