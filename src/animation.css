@@ -1,0 +1,65 @@
+:root {
+  --sec: 0.3s;
+
+  /* 次へ：新しい画像が右から入ってきて古い画像を左に押し出す */
+  &[data-direction="next"] {
+    &::view-transition-old(viewer-image) {
+      animation: push-out-left var(--sec) ease both;
+    }
+
+    &::view-transition-new(viewer-image) {
+      animation: push-in-from-right var(--sec) ease both;
+    }
+  }
+
+  /* 前へ：新しい画像が左から入ってきて古い画像を右に押し出す */
+  &[data-direction="prev"] {
+    &::view-transition-old(viewer-image) {
+      animation: push-out-right var(--sec) ease both;
+    }
+
+    &::view-transition-new(viewer-image) {
+      animation: push-in-from-left var(--sec) ease both;
+    }
+  }
+}
+
+/* 押し出しアニメーション：右から入ってくる */
+@keyframes push-in-from-right {
+  from {
+    translate: 100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* 押し出しアニメーション：左から入ってくる */
+@keyframes push-in-from-left {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* 押し出しアニメーション：左に押し出される */
+@keyframes push-out-left {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -100% 0;
+  }
+}
+
+/* 押し出しアニメーション：右に押し出される */
+@keyframes push-out-right {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 100% 0;
+  }
+}

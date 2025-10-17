@@ -1,0 +1,139 @@
+.image-viewer {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+
+  .viewer-stage {
+    width: 100%;
+    height: 100%;
+
+    .main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .viewer-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    view-transition-name: viewer-controls;
+    pointer-events: none;
+
+    .nav-button,
+    .close-button {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgb(255 255 255 / 50%);
+      background: rgb(255 255 255 / 30%);
+      backdrop-filter: blur(20px);
+      color: inherit;
+      scale: 1;
+      transition: 0.3s;
+      user-select: none;
+      pointer-events: auto;
+
+      &:active {
+        scale: 0.8;
+      }
+    }
+
+    .nav-button {
+      width: 56px;
+      height: 56px;
+      font-size: 1rem;
+
+      .nav-icon {
+        width: 24px;
+        height: 24px;
+        display: block;
+        translate: 0;
+        transition: 0.3s;
+      }
+
+      &:disabled,
+      &.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+    }
+
+    .close-button {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      width: 48px;
+      height: 48px;
+    }
+
+    .close-icon {
+      display: inline-block;
+      rotate: 0deg;
+      transition: 0.3s;
+    }
+
+    @media (any-hover: hover) {
+      .nav-button:hover,
+      .close-button:hover {
+        background: rgb(255 255 255 / 20%);
+        scale: 1.05;
+      }
+      .nav-button.prev:hover .nav-icon {
+        translate: -4px 0;
+      }
+      .nav-button.next:hover .nav-icon {
+        translate: 4px 0;
+      }
+      .close-button:hover .close-icon {
+        rotate: 90deg;
+      }
+    }
+  }
+
+  .image-metadata {
+    position: absolute;
+    font-size: 0.625rem;
+    white-space: nowrap;
+    view-transition-name: image-metadata;
+    left: 16px;
+    bottom: 16px;
+    color: rgb(255 255 255 / 50%);
+  }
+
+  @media (width <= 768px) {
+    .viewer-controls {
+      padding: 24px;
+
+      .nav-button {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+      }
+
+      .close-button {
+        top: 24px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    .image-info {
+      bottom: 24px;
+    }
+
+    .image-metadata {
+      bottom: 24px;
+      left: 24px;
+      max-width: calc(100% - 48px);
+      font-size: 0.625rem;
+    }
+  }
+}
