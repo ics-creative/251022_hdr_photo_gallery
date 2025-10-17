@@ -100,11 +100,10 @@
   .image-metadata {
     position: absolute;
     font-size: 0.625rem;
-    white-space: nowrap;
     view-transition-name: image-metadata;
     left: 16px;
     bottom: 16px;
-    color: rgb(255 255 255 / 50%);
+    color: rgb(255 255 255 / 33%);
   }
 
   @media (width <= 768px) {
@@ -123,17 +122,6 @@
         width: 44px;
         height: 44px;
       }
-    }
-
-    .image-info {
-      bottom: 24px;
-    }
-
-    .image-metadata {
-      bottom: 24px;
-      left: 24px;
-      max-width: calc(100% - 48px);
-      font-size: 0.625rem;
     }
   }
 }

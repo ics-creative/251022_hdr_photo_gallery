@@ -4,8 +4,8 @@ import "./HdrControls.css";
 interface HdrControlsProps {
   isHdrSupported: boolean | null;
   isHdrEnabled: boolean;
-  onToggle: (enabled: boolean) => void;
   isViewTransitionEnabled: boolean;
+  onToggleHdrEnabled: (enabled: boolean) => void;
   onToggleViewTransition: (enabled: boolean) => void;
 }
 
@@ -13,7 +13,7 @@ interface HdrControlsProps {
 export const HdrControls = ({
   isHdrSupported,
   isHdrEnabled,
-  onToggle,
+  onToggleHdrEnabled,
   isViewTransitionEnabled,
   onToggleViewTransition,
 }: HdrControlsProps) => {
@@ -25,7 +25,7 @@ export const HdrControls = ({
   })();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onToggle(event.target.checked);
+    onToggleHdrEnabled(event.target.checked);
   };
 
   const checkboxRef = useRef<HTMLInputElement>(null);
@@ -45,9 +45,8 @@ export const HdrControls = ({
   };
 
   return (
-    <aside className="hdr-controls" aria-live="polite">
+    <aside className="hdr-controls">
       <label className="hdr-switch">
-        <span className="hdr-switch__label">HDR</span>
         <input
           id="hdr-toggle"
           type="checkbox"
@@ -55,10 +54,10 @@ export const HdrControls = ({
           checked={isHdrEnabled}
           onChange={handleChange}
         />
+        <span className="hdr-switch__label">HDR</span>
       </label>
 
       <label className="hdr-switch">
-        <span className="hdr-switch__label">ビュー遷移演出</span>
         <input
           id="view-transition-toggle"
           type="checkbox"
@@ -66,6 +65,7 @@ export const HdrControls = ({
           checked={isViewTransitionEnabled}
           onChange={handleViewTransitionChange}
         />
+        <span className="hdr-switch__label">ビュー遷移演出</span>
       </label>
 
       <p className="hdr-support">{supportLabel}</p>
