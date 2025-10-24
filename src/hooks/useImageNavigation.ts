@@ -72,7 +72,6 @@ export const useImageNavigation = ({
       window.scrollTo({ top: previousScrollPosition });
     }, 33);
 
-
     try {
       await transition.finished;
     } catch {
@@ -90,10 +89,24 @@ export const useImageNavigation = ({
 
     if (newIndex === selectedImageIndex) return;
 
-    setIsNavigating(true);
+    const newImage = images[newIndex];
+
+    // view-transition-nameを設定してからView Transitionを開始
+    flushSync(() => {
+      setIsNavigating(true);
+      setTransitioningImageId(newImage.id);
+    });
+
+    // DOMの更新を確実に反映させるため、ダブルRAFで次のフレームまで待つ
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
+
     const transition = startDetailImageTransition(direction, () => {
       setSelectedImageIndex(newIndex);
-      setSelectedImage(images[newIndex]);
+      setSelectedImage(newImage);
     });
 
     try {
@@ -101,7 +114,10 @@ export const useImageNavigation = ({
     } catch {
       // no-op
     } finally {
-      setIsNavigating(false);
+      flushSync(() => {
+        setIsNavigating(false);
+        setTransitioningImageId(null);
+      });
     }
   };
 

@@ -42,7 +42,6 @@ export const App = () => {
           onClose={handleCloseViewer}
           onNavigate={handleNavigate}
           isNavigating={isNavigating}
-          isTransitioningFromGrid={transitioningImageId === selectedImage.id}
         />
       )}
 
