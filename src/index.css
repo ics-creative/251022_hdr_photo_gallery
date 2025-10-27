@@ -46,15 +46,16 @@ body {
 }
 
 .app {
+  dynamic-range-limit: no-limit;
   &.gallery-mode {
-    dynamic-range-limit: standard;
+    /*dynamic-range-limit: standard;*/
   }
 
   &.viewer-mode {
-    dynamic-range-limit: standard;
+    /*dynamic-range-limit: standard;*/
 
     &.hdr-on {
-      dynamic-range-limit: no-limit;
+      /*dynamic-range-limit: no-limit;*/
     }
   }
 }

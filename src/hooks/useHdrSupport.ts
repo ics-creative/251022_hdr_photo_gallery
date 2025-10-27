@@ -14,6 +14,7 @@ export const useHdrSupport = () => {
 
     const mediaQueries = HDR_MEDIA_QUERIES.map((query) => window.matchMedia(query));
     mediaQueries.forEach((query) => query.addEventListener("change", updateHdrSupport));
+
     return () => {
       mediaQueries.forEach((query) => query.removeEventListener("change", updateHdrSupport));
     };

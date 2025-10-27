@@ -1,4 +1,4 @@
-import { type ChangeEvent, useEffect, useRef } from "react";
+import { type ChangeEvent } from "react";
 import "./HdrControls.css";
 
 interface HdrControlsProps {
@@ -23,18 +23,6 @@ export const HdrControls = ({
     onToggleHdrEnabled(event.target.checked);
   };
 
-  const checkboxRef = useRef<HTMLInputElement>(null);
-  const viewTransitionRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const inputs = [checkboxRef.current, viewTransitionRef.current];
-    inputs.forEach((input) => {
-      if (input) {
-        input.setAttribute("switch", "");
-      }
-    });
-  }, []);
-
   const handleViewTransitionChange = (event: ChangeEvent<HTMLInputElement>) => {
     onToggleViewTransition(event.target.checked);
   };
@@ -46,7 +34,7 @@ export const HdrControls = ({
           <input
             id="hdr-toggle"
             type="checkbox"
-            ref={checkboxRef}
+            switch=""
             checked={isHdrEnabled}
             onChange={handleChange}
           />
@@ -58,16 +46,14 @@ export const HdrControls = ({
         <input
           id="view-transition-toggle"
           type="checkbox"
-          ref={viewTransitionRef}
+          switch=""
           checked={isViewTransitionEnabled}
           onChange={handleViewTransitionChange}
         />
         <span className="hdr-switch__label">ビュー遷移演出</span>
       </label>
 
-      <p className="hdr-support">
-        {isViewerMode ? "dynamic-range-limit: no-limit" : "dynamic-range-limit: standard"}
-      </p>
+      <p className="hdr-support">{isViewerMode && isHdrEnabled ? "no-limit" : "standard"}</p>
 
       {!isHdrSupported && isHdrEnabled && (
         <p className="hdr-warning">HDR未対応のためHDR表示にはなりません。</p>
