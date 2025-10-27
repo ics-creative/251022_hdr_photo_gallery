@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HDR_MEDIA_QUERIES, isHDRCapable } from "../utils/hdr";
+import { HDR_MEDIA_QUERIES, isHdrCapable } from "../utils/hdr";
 
 /** HDRサポート状態を管理するカスタムフック */
 export const useHdrSupport = () => {
@@ -7,7 +7,7 @@ export const useHdrSupport = () => {
 
   useEffect(() => {
     const updateHdrSupport = () => {
-      setIsHdrSupported(isHDRCapable());
+      setIsHdrSupported(isHdrCapable());
     };
 
     updateHdrSupport();

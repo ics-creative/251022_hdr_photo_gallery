@@ -7,6 +7,7 @@ interface HdrControlsProps {
   isViewTransitionEnabled: boolean;
   onToggleHdrEnabled: (enabled: boolean) => void;
   onToggleViewTransition: (enabled: boolean) => void;
+  isViewerMode: boolean; // 詳細画面かどうか
 }
 
 /** HDR表示の有効・無効とサポート状況を管理するUI */
@@ -16,12 +17,13 @@ export const HdrControls = ({
   onToggleHdrEnabled,
   isViewTransitionEnabled,
   onToggleViewTransition,
+  isViewerMode,
 }: HdrControlsProps) => {
   const supportLabel = (() => {
     if (isHdrSupported === null) {
-      return "HDR対応を判定しています…";
+      return "";
     }
-    return isHdrSupported ? "HDR対応ディスプレイ" : "HDR非対応ディスプレイ";
+    return !isHdrSupported ? "HDR非対応" : "";
   })();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,16 +48,18 @@ export const HdrControls = ({
 
   return (
     <aside className="hdr-controls">
-      <label className="hdr-switch">
-        <input
-          id="hdr-toggle"
-          type="checkbox"
-          ref={checkboxRef}
-          checked={isHdrEnabled}
-          onChange={handleChange}
-        />
-        <span className="hdr-switch__label">HDR</span>
-      </label>
+      {isViewerMode && (
+        <label className="hdr-switch">
+          <input
+            id="hdr-toggle"
+            type="checkbox"
+            ref={checkboxRef}
+            checked={isHdrEnabled}
+            onChange={handleChange}
+          />
+          <span className="hdr-switch__label">HDR</span>
+        </label>
+      )}
 
       <label className="hdr-switch">
         <input
@@ -68,7 +72,11 @@ export const HdrControls = ({
         <span className="hdr-switch__label">ビュー遷移演出</span>
       </label>
 
-      <p className="hdr-support">{supportLabel}</p>
+      <p className="hdr-support">
+        {isViewerMode ? "dynamic-range-limit: no-limit" : "dynamic-range-limit: standard"}
+      </p>
+
+      {supportLabel && <p className="hdr-support">{supportLabel}</p>}
 
       {!isHdrSupported && isHdrEnabled && (
         <p className="hdr-warning">HDR未対応のためHDR表示にはなりません。</p>

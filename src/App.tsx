@@ -23,7 +23,13 @@ export const App = () => {
     handleNavigate,
   } = useImageNavigation({ images });
 
-  const appClassName = isHdrEnabled ? "app hdr-on" : "app";
+  const appClassName = [
+    "app",
+    isHdrEnabled ? "hdr-on" : "",
+    selectedImage ? "viewer-mode" : "gallery-mode",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={appClassName}>
@@ -51,6 +57,7 @@ export const App = () => {
         onToggleHdrEnabled={handleHdrToggle}
         isViewTransitionEnabled={isViewTransitionEnabled}
         onToggleViewTransition={handleViewTransitionToggle}
+        isViewerMode={!!selectedImage}
       />
     </div>
   );
