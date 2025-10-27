@@ -13,6 +13,7 @@ interface ImageViewerProps {
   onClose: () => void;
   onNavigate: (direction: "prev" | "next") => void;
   isNavigating: boolean;
+  isViewTransitionEnabled: boolean;
 }
 
 /** 詳細ビューとして画像を拡大表示するコンポーネント */
@@ -23,6 +24,7 @@ export const ImageViewer = ({
   onClose,
   onNavigate,
   isNavigating,
+  isViewTransitionEnabled,
 }: ImageViewerProps) => {
   useKeyboard({
     Escape: onClose,
@@ -57,8 +59,10 @@ export const ImageViewer = ({
     };
   }, [image.path]);
 
-  // 常時 view-transition-name を維持して、初回遷移時にも確実に View Transition が成立するようにする
-  const transitionStyle = { viewTransitionName: DETAIL_VIEWER_TRANSITION_NAME };
+  // isViewTransitionEnabledがtrueの場合のみ view-transition-name を設定
+  const transitionStyle = isViewTransitionEnabled
+    ? { viewTransitionName: DETAIL_VIEWER_TRANSITION_NAME }
+    : undefined;
 
   const isPrevDisabled = imageIndex === 0 || isNavigating;
   const isNextDisabled = imageIndex === totalImages - 1 || isNavigating;

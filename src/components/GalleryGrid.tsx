@@ -5,6 +5,7 @@ import "./GalleryGrid.css";
 interface GalleryGridProps {
   onImageClick: (image: ImageInfo, index: number) => void;
   activeTransitionImageId?: string | null;
+  isViewTransitionEnabled: boolean;
 }
 
 const images = getImageList();
@@ -19,7 +20,11 @@ const layoutPattern = [
 ];
 
 /** ギャラリー画像をグリッドで表示するコンポーネント */
-export const GalleryGrid = ({ onImageClick, activeTransitionImageId }: GalleryGridProps) => {
+export const GalleryGrid = ({
+  onImageClick,
+  activeTransitionImageId,
+  isViewTransitionEnabled,
+}: GalleryGridProps) => {
   return (
     <main className="gallery-grid">
       <div className="gallery-header">
@@ -43,7 +48,7 @@ export const GalleryGrid = ({ onImageClick, activeTransitionImageId }: GalleryGr
                 alt=""
                 loading="lazy"
                 style={
-                  activeTransitionImageId === image.id
+                  isViewTransitionEnabled && activeTransitionImageId === image.id
                     ? { viewTransitionName: DETAIL_VIEWER_TRANSITION_NAME }
                     : undefined
                 }

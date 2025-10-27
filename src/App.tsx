@@ -21,12 +21,13 @@ export const App = () => {
     handleImageClick,
     handleCloseViewer,
     handleNavigate,
-  } = useImageNavigation({ images });
+  } = useImageNavigation({ images, isViewTransitionEnabled });
 
   const appClassName = [
     "app",
     isHdrEnabled ? "hdr-on" : "",
     selectedImage ? "viewer-mode" : "gallery-mode",
+    isViewTransitionEnabled ? "view-transition-enabled" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -37,6 +38,7 @@ export const App = () => {
         <GalleryGrid
           onImageClick={handleImageClick}
           activeTransitionImageId={transitioningImageId}
+          isViewTransitionEnabled={isViewTransitionEnabled}
         />
       )}
 
@@ -48,6 +50,7 @@ export const App = () => {
           onClose={handleCloseViewer}
           onNavigate={handleNavigate}
           isNavigating={isNavigating}
+          isViewTransitionEnabled={isViewTransitionEnabled}
         />
       )}
 

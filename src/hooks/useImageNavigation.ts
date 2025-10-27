@@ -5,6 +5,7 @@ import { startDetailImageTransition, startViewTransition } from "../animations/v
 
 interface UseImageNavigationProps {
   images: ImageInfo[];
+  isViewTransitionEnabled: boolean;
 }
 
 interface UseImageNavigationReturn {
@@ -21,6 +22,7 @@ interface UseImageNavigationReturn {
 /** 画像ナビゲーション状態とハンドラーを管理するカスタムフック */
 export const useImageNavigation = ({
   images,
+  isViewTransitionEnabled,
 }: UseImageNavigationProps): UseImageNavigationReturn => {
   const [selectedImage, setSelectedImage] = useState<ImageInfo | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -35,18 +37,25 @@ export const useImageNavigation = ({
       setTransitioningImageId(image.id);
     });
 
-    const transition = startViewTransition(() => {
+    if (isViewTransitionEnabled) {
+      const transition = startViewTransition(() => {
+        setSelectedImage(image);
+        setSelectedImageIndex(index);
+        setIsNavigating(false);
+      });
+
+      try {
+        await transition.finished;
+      } catch {
+        // no-op
+      } finally {
+        setTransitioningImageId((currentId) => (currentId === image.id ? null : currentId));
+      }
+    } else {
       setSelectedImage(image);
       setSelectedImageIndex(index);
       setIsNavigating(false);
-    });
-
-    try {
-      await transition.finished;
-    } catch {
-      // no-op
-    } finally {
-      setTransitioningImageId((currentId) => (currentId === image.id ? null : currentId));
+      setTransitioningImageId(null);
     }
   };
 
@@ -62,22 +71,29 @@ export const useImageNavigation = ({
       setTransitioningImageId(closingImageId);
     });
 
-    const transition = startViewTransition(() => {
+    if (isViewTransitionEnabled) {
+      const transition = startViewTransition(() => {
+        setSelectedImage(null);
+        setIsNavigating(false);
+      });
+
+      // レンダリング後に、スクロール位置を調整するためマジックナンバーで指定
+      setTimeout(() => {
+        window.scrollTo({ top: previousScrollPosition });
+      }, 33);
+
+      try {
+        await transition.finished;
+      } catch {
+        // no-op
+      } finally {
+        setTransitioningImageId((currentId) => (currentId === closingImageId ? null : currentId));
+      }
+    } else {
       setSelectedImage(null);
       setIsNavigating(false);
-    });
-
-    // レンダリング後に、スクロール位置を調整するためマジックナンバーで指定
-    setTimeout(() => {
+      setTransitioningImageId(null);
       window.scrollTo({ top: previousScrollPosition });
-    }, 33);
-
-    try {
-      await transition.finished;
-    } catch {
-      // no-op
-    } finally {
-      setTransitioningImageId((currentId) => (currentId === closingImageId ? null : currentId));
     }
   };
 
@@ -104,20 +120,27 @@ export const useImageNavigation = ({
       });
     });
 
-    const transition = startDetailImageTransition(direction, () => {
+    if (isViewTransitionEnabled) {
+      const transition = startDetailImageTransition(direction, () => {
+        setSelectedImageIndex(newIndex);
+        setSelectedImage(newImage);
+      });
+
+      try {
+        await transition.finished;
+      } catch {
+        // no-op
+      } finally {
+        flushSync(() => {
+          setIsNavigating(false);
+          setTransitioningImageId(null);
+        });
+      }
+    } else {
       setSelectedImageIndex(newIndex);
       setSelectedImage(newImage);
-    });
-
-    try {
-      await transition.finished;
-    } catch {
-      // no-op
-    } finally {
-      flushSync(() => {
-        setIsNavigating(false);
-        setTransitioningImageId(null);
-      });
+      setIsNavigating(false);
+      setTransitioningImageId(null);
     }
   };
 

@@ -8,6 +8,9 @@
   border-radius: 12px;
   background: rgb(0 0 0 / 70%);
   backdrop-filter: blur(8px);
+}
+
+.view-transition-enabled .hdr-controls {
   view-transition-name: hdr-controls;
 }
 
