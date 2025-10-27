@@ -19,13 +19,6 @@ export const HdrControls = ({
   onToggleViewTransition,
   isViewerMode,
 }: HdrControlsProps) => {
-  const supportLabel = (() => {
-    if (isHdrSupported === null) {
-      return "";
-    }
-    return !isHdrSupported ? "HDR非対応" : "";
-  })();
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onToggleHdrEnabled(event.target.checked);
   };
@@ -75,8 +68,6 @@ export const HdrControls = ({
       <p className="hdr-support">
         {isViewerMode ? "dynamic-range-limit: no-limit" : "dynamic-range-limit: standard"}
       </p>
-
-      {supportLabel && <p className="hdr-support">{supportLabel}</p>}
 
       {!isHdrSupported && isHdrEnabled && (
         <p className="hdr-warning">HDR未対応のためHDR表示にはなりません。</p>
